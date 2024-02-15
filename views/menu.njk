@@ -1,0 +1,13 @@
+<div class="alert alert-secondary">
+    <a class="btn btn-dark" href="/habitaciones">Listado de habitaciones</a>
+    &nbsp;&nbsp;
+    {% if (session and session.usuario) %}
+        <a class="btn btn-dark" href="/habitaciones/nueva">Nueva habitación</a>
+    {% endif %}
+
+    {% if (session and session.usuario) %}
+        <a class="btn btn-danger" style="float:right;" href="/auth/logout">LogOut</a>
+    {% else %}
+        <a class="btn btn-success" style="float: right;" href="/">LogIn</a>
+    {% endif %}
+</div>

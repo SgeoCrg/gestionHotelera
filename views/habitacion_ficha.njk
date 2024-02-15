@@ -1,0 +1,88 @@
+{% extends "base.njk" %}
+
+{% block titulo %}habitaciones | Datos{% endblock %}
+
+{% block contenido %}
+
+    <h1>Ficha de la habitación {{ habitacion.numero }}</h1>
+    {% if habitacion.imagen %}
+        <img src="../../public/uploads/habitaciones_del_proyecto/{{ habitacion.imagen }}"/>
+    {% endif %}
+
+    <p>Tipo {{ habitacion.tipo }} - 
+    <strong> {{ habitacion.precio }} eur/noche</strong></p>
+    <p>{{ habitacion.descripcion }}</p>
+    {% if session and session.usuario %}
+    <a class="btn btn-warning" href="/habitaciones/editar/{{ habitacion.id }}">Editar habitacion</a>
+    <br>
+    <form action="/habitaciones/{{habitacion.id}}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button class="btn btn-danger">Borrar habitacion</button>
+    </form>
+    {% endif %}
+
+    <h2>Incidencias</h2></br>
+    {% if session and session.usuario %}
+    <button id="abrirFormulario" class="btn btn-primary">Nueva incidencia</button>
+    {% endif %}
+    <div id="formulario" hidden>
+        <form action="/habitaciones/{{ habitacion.id }}/incidencias" method="post" enctype="multipart/form-data">
+            <div class="formGroup">
+                <label>Descripcion:
+                <textarea class="form-control" name="descripcion"  rows="3"
+                    placeholder="descripcion..."></textarea></label>
+            </div></br>
+            <div>
+                <input type="file" class="form-control" name="imagen">
+            </div></br>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    
+    {% for incidencia in habitacion.incidencias %}
+    <div class="card">
+    {% if incidencia.imagen %}
+        <img width="200px" height="200px" src="../../public/uploads/incidencias/{{ incidencia.imagen }}" alt="imagen"></img>
+    {% endif %}
+        <p>({{ incidencia.fechaInicio | date("DD/MM/YYYY")}})</p>
+        <p>{{ incidencia.descripcion }}</p>
+        {% if not incidencia.fechaFin %}
+        <form action="/habitaciones/{{habitacion.id}}/incidencias/{{incidencia.id}}"
+            method="post">
+            <input type="hidden" name="_method" value="put">
+            <div class="row">
+            {% if (session and session.usuario) %}
+                <button type="submit" class="btn btn-danger col-1"
+                style="margin-left:15px; margin-bottom:5px;">Cerrar</button>
+            {% endif %}
+             </div>
+        </form>
+        {% else %}
+        <p class="text-success">Cerrada el {{ incidencia.fechaFin | date("DD/MM/YYYY") }}</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <h3>No hay incidencias</h3>
+    {% endfor %}
+
+    <h2>Limpiezas</h2>
+    {% if (session and session.usuario) %}
+    <a class="btn btn-primary" href="/limpiezas/{{ habitacion.id }}">Ver limpiezas</a>
+    {% endif %}
+
+    <script>
+
+    const boton = document.getElementById('abrirFormulario');
+    const div = document.getElementById('formulario');
+
+    function abrirFormulario() {
+        console.log('holi');
+        div.hidden = false;
+        boton.hidden = true;
+    }
+
+    boton.addEventListener('click', abrirFormulario);
+
+    </script>
+
+{% endblock %}

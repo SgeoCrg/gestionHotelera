@@ -1,0 +1,21 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Gestion Hotel | Listado de habitaciones{% endblock %}
+
+{% block contenido %}
+
+    <h1>Listado de habitaciones</h1>
+
+    <div class="row">
+
+    {% for habitacion in habitaciones %}
+        <div class="col-4">
+            <h3>Habitacion {{ habitacion.numero }}</h3>
+            <p>Última limpieza: {{ habitacion.ultimaLimpieza | date ("DD/MM/YYYY")}}</p>
+            <a class="btn btn-primary" href="/habitaciones/{{ habitacion.id }}">Ver ficha</a>
+        </div>
+    {% else %}
+    <h1>No hay habitaciones que mostrar</h1>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.njk" %}
+
+{% block titulo %}habitaciones | Login{% endblock %}
+
+{% block contenido %}
+
+{% if error %}
+
+    <div class="alert alert-danger">{{ error }}</div>
+
+{% endif %}
+
+<form action="/auth/login" method="post">
+    <div class="form-group">
+        <div class="form-group">
+            <label for="user">User:
+                <input class="form-control" type="text" name="login">
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:
+                <input class="form-control" type="password" name="password">
+            </label>
+        </div>
+    </div></br>
+    <button class="btn btn-primary" type="submit">Entrar</button>
+</form>
+
+{% endblock %}

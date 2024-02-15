@@ -1,0 +1,61 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Habitacion | Editar{% endblock %}
+
+{% block contenido %}
+
+    <h1>Edicion de Habitacion</h1>
+
+    <form action="/habitaciones/{{ habitacion.id }}" method="post">
+        <input type="hidden" name="_method" value="put">
+        <div class="form-group">
+            <label>Número:
+                <input type="number" class="form-control" name="numero"
+                    value="{{ habitacion.numero }}">
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Tipo:</label>
+            <select id="tipo" name="tipo">
+                <option value="0">INDIVIDUAL</option>
+                <option value="1">DOBLE</option>
+                <option value="2">FAMILIAR</option>
+                <option value="3">SUITE</option>
+                </select>
+        </div>
+        <div class="form-group">
+            <label>Descripcion:
+                <input type="text" class="form-control" name="descripcion"
+                    placeholder="Descripcion"..." value="{{ habitacion.descripcion }}">
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Precio:
+                <input type="text" class="form-control" name="precio"
+                    placeholder="Precio de la habitación"..." value="{{ habitacion.precio }}">
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Fecha de la última limpieza:
+                <input type="date" class="form-control" name="fecha"
+                    value="{{ fechaLimpieza }}">
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Editar</button>
+    </form>
+
+    <script>
+
+        const opcion = "{{ habitacion.tipo | safe }}";
+
+        let select = document.getElementById('tipo');
+
+        for(let i = 0; i < select.options.length; i++) {
+            if(select.options[i].text === opcion) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+    </script>
+
+{% endblock %}
